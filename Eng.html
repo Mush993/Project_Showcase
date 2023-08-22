@@ -1,0 +1,435 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <script src="Scripts/jquery-3.6.0.min.js"></script>
+    <script src="Scripts/dayjs.min.js"></script>
+    <link href="CSS/Custom.css" rel="stylesheet" />
+    <link href="CSS/swiper-bundle.min.css" rel="stylesheet" />
+    <style>
+        .swiper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+            .swiper-slide img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .a {
+            height: 10px;
+            width: 20px;
+            background-color: yellow;
+        }
+
+        .SliderIn {
+            width: 2886px;
+        }
+
+        .Slider {
+            width: 100%;
+            position: absolute;
+            top: 730px;
+            /* left: 2px; */
+            height: 256px;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        .Fish {
+            margin: 10px;
+            float: left;
+            width: 323px;
+            height: 228px;
+            /* background-color: yellow; */
+        }
+
+        .TS {
+            /*height: 342px;
+            width: 645px;*/
+            /* background-color: antiquewhite; */
+            /* background-size: 900px !important; */
+            /*position: absolute;
+            top: 217px;
+            left: 641px;*/
+            height: 342px;
+            width: 709px;
+            /*background-color: antiquewhite;*/
+            position: absolute;
+            top: 217px;
+            left: 617px;
+        }
+
+        .Desc {
+            width: 510px;
+            height: 530px;
+            position: absolute;
+            top: 185px;
+            left: 96px;
+            border: none;
+        }
+
+        .Map {
+            width: 505px;
+            height: 530px;
+            position: absolute;
+            top: 183px;
+            left: 1319px;
+            border: none;
+        }
+
+        .Title {
+            width: 715px;
+            height: 132px;
+            position: absolute;
+            top: 53px;
+            left: 597px;
+            border: none;
+        }
+
+
+        .swiper-slide {
+            background: none;
+            height: 260px;
+            background-repeat: no-repeat;
+            background-image: url(images/Thumbs_Eng/1-Mal-Puluttaa-2.png);
+        }
+
+        #sw {
+            top: 722px;
+            /*left: 19px;*/
+            height: 248px;
+        }
+
+        .StillContainer {
+            height: 336px;
+            width: 676px;
+            position: absolute;
+            top: 232px;
+            left: 613px;
+        }
+    </style>
+    <script>window.CI360 = { notInitOnLoad: true }</script>
+    <script type="text/javascript">
+
+        var fisharray;
+        $(function () {
+            $('.Title').css('display', 'none');
+            $('.Desc').css('display', 'none');
+            $('.Map').css('display', 'none');
+
+            //$.get('/Data/Info_Eng.js', function (data) {
+            $.get('/Fish/Data/Info_Eng.js', function (data) {
+
+                fisharray = eval(data);
+                console.log(fisharray);
+
+
+                var swiper = new Swiper(".mySwiper", {
+                    slidesPerView: 6,
+                    spaceBetween: 0,
+                    direction: 'horizontal',
+                    loop: true,
+                    centeredSlides: true,
+
+                    //pagination: {
+                    //    el: ".swiper-pagination",
+                    //    /*   clickable: true,*/
+                    //},
+
+                });
+
+                swiper.init()
+                swiper.slideTo(7, 500, function () {
+
+                })
+
+                swiper.on('transitionEnd', function (e) {
+
+                    //alert(swiper.realIndex);
+                    var id = $('.swiper-slide-active').attr('data-id');
+                    for (var i = 0; i < fisharray.length; i++) {
+                        if (fisharray[i].Id == id) {
+                            var temp = fisharray[i];
+
+
+                            var newImg = new Image;
+                            newImg.src = 'images/Title_Eng/' + temp.Title;
+
+                            $(".Title").fadeTo(100, .30, function () {
+                                $(".Title").attr("src", newImg.src);
+                            }).fadeTo(500, 1);
+
+
+                            //$(".Title").attr("src", "images/Title/" + temp.Title);
+                            //$('.Title').css('display', 'block');
+
+
+                            var newImgDesc = new Image;
+                            newImgDesc.src = 'images/DescriptionEng/' + temp.Description;
+
+                            $(".Desc").fadeTo(100, .30, function () {
+                                $(".Desc").attr("src", newImgDesc.src);
+                            }).fadeTo(500, 1);
+
+                            
+
+                            //$(".Desc").attr("src", "images/Description/" + temp.Description);
+                            //$('.Desc').css('display', 'block');
+
+                            var newImgMap = new Image;
+                            newImgMap.src = 'images/Maps_Eng/' + temp.DescriptionMap;
+                            
+
+                            $(".Map").fadeTo(100, .30, function () {
+                                $(".Map").attr("src", newImgMap.src);
+                            }).fadeTo(500, 1);
+
+                            //$(".Map").attr("src", "images/Maps/" + temp.DescriptionMap);
+                        /*    $('.Map').css('display', 'block');*/
+
+
+
+                            $('.swiper-slide').each(function () {
+                                var un = $(this).attr('data-un');
+                                $(this).css('background-image', 'url(' + un + ')');
+
+                            });
+
+                            var sel = $('.swiper-slide-active').attr('data-sel');
+                            $('.swiper-slide-active').css('background-image', 'url(' + sel + ')');
+
+
+
+                            if (temp.StilImg != "") {
+
+                                $('.cloudimage-360').css('display', 'none');
+                                //var im = $('<div class="StillImg" style="Background-image:url(' + 'images/StillImg/' + temp.StilImg+')"></div>')
+                                $('.StillContainer').css('background-image', 'url(' + 'images/StillImg/' + temp.StilImg + ')');
+
+                                $('.StillContainer').css('display', 'block');
+
+                            }
+                            else {
+                                $('.StillContainer').css('display', 'none');
+
+                                $('.cloudimage-360').css('display', 'block');
+
+                                window.CI360.destroy();
+                                $('.cloudimage-360').attr('data-folder', 'images/' + temp.Imagesequence + '/');
+                                $('.cloudimage-360').attr('data-filename', temp.Index);
+                                $('.cloudimage-360').attr('data-amount', temp.ImagesequenceQty);
+
+                                window.CI360.init();
+                            }
+
+
+
+                        }
+                    }
+
+
+                });
+
+
+            });
+
+
+
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            $('.Back').click(function () {
+                location.href = "Start.html";
+            })
+        });
+
+        function updateTime() {
+            var d = new Date();
+
+            var hours = dayjs(d).hour();
+            var minute = dayjs(d).minute();
+            var ampm = (hours >= 12) ? "PM" : "AM";
+
+            if (minute < 10) {
+                minute = "0" + minute;
+            }
+            if (hours < 10) {
+                hours = "0" + hours;
+            }
+
+            var time = hours + ":" + minute;
+
+
+
+            var dt = dayjs(d).date();
+            var yy = dayjs(d).year();
+
+
+            var dayIndex = dayjs(d).day();
+            var day = "";
+            if (dayIndex == 0) {
+                day = "Sunday";
+            }
+            else if (dayIndex == 1) {
+                day = "Monday";
+            }
+            else if (dayIndex == 2) {
+                day = "Tuesday";
+            }
+            else if (dayIndex == 3) {
+                day = "Wednesday";
+
+            } else if (dayIndex == 4) {
+                day = "Thursday";
+
+            } else if (dayIndex == 5) {
+                day = "Friday";
+
+            } else if (dayIndex == 6) {
+                day = "Saturday";
+
+            }
+
+            var MonthIndex = dayjs(d).month();
+            var Month = "";
+            if (MonthIndex == 0) {
+                Month = "January"
+            }
+            else if (MonthIndex == 1) {
+                Month = "February"
+            }
+            else if (MonthIndex == 2) {
+                Month = "March"
+            }
+            else if (MonthIndex == 3) {
+                Month = "April"
+            } else if (MonthIndex == 4) {
+                Month = "May"
+            } else if (MonthIndex == 5) {
+                Month = "June"
+            } else if (MonthIndex == 6) {
+                Month = "July"
+            } else if (MonthIndex == 7) {
+                Month = "August"
+            } else if (MonthIndex == 8) {
+                Month = "September"
+            } else if (MonthIndex == 9) {
+                Month = "October"
+            } else if (MonthIndex == 10) {
+                Month = "November"
+            } else if (MonthIndex == 11) {
+                Month = "December"
+            }
+            else if (MonthIndex == 12) {
+                Month = "December"
+            }
+            $('.Time').text(time);
+            $('.Ampm').text(ampm);
+            $('.day').text(day + ",");
+
+
+
+            $('.date').text(Month + " " + dt + ", " + yy);
+
+        }
+
+
+
+    </script>
+</head>
+<body>
+    <!--<div class="BG" style="background-image: url(HtmlAssets/3-Detail-Page.jpg)">-->
+    <div class="BG" style="background-image: url(HtmlAssets/Detail-BackgroundEng.png)">
+        <div class="TimeContainer">
+            <div class="Time"></div>
+            <div class="Ampm"></div>
+        </div>
+        <div class="DateContainer">
+            <div class="day"></div>
+            <div class="date"></div>
+        </div>
+
+
+        <img class="Title" />
+        <img class="Desc" />
+        <div class="Back"></div>
+        <!--data-spin-reverse-->
+        <div class="TS">
+            <div class="cloudimage-360"
+                 data-folder="images/Mal-Puluttaa/"
+                 data-filename="Fish.305.{index}.png"
+                 data-amount="36"></div>
+        </div>
+        <div class="StillContainer" style="display:none">
+
+        </div>
+        <script src="Scripts/js-cloudimage-360-view.min.js"></script>
+
+        <!--<div class="Map"></div>-->
+        <img class="Map" />
+
+        <div class="swiper mySwiper" id="sw">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" data-id="0" style="background-image: url(images/Thumbs_Eng/1-Mal-Puluttaa-2.png)" data-sel="images/Thumbs_Eng/1-Mal-Puluttaa-1.png" data-un="images/Thumbs_Eng/1-Mal-Puluttaa-2.png"></div>
+                <div class="swiper-slide" data-id="1" style="background-image: url(images/Thumbs_Eng/2-Pulli-Ahiraawaa-2.png)" data-sel="images/Thumbs_Eng/2-Pulli-Ahiraawaa-1.png" data-un="images/Thumbs_Eng/2-Pulli-Ahiraawaa-2.png"></div>
+                <div class="swiper-slide" data-id="2" style="background-image: url(images/Thumbs_Eng/3-Pathirana-Saalayaa-2.png)" data-sel="images/Thumbs_Eng/3-Pathirana-Saalayaa-1.png" data-un="images/Thumbs_Eng/3-Pathirana-Saalayaa-2.png"></div>
+                <div class="swiper-slide" data-id="3" style="background-image: url(images/Thumbs_Eng/4-Loku-Gadayaa-2.png)" data-sel="images/Thumbs_Eng/4-Loku-Gadayaa-1.png" data-un="images/Thumbs_Eng/4-Loku-Gadayaa-2.png"></div>
+                <div class="swiper-slide" data-id="4" style="background-image: url(images/Thumbs_Eng/5-Thambalayaa-2.png)" data-sel="images/Thumbs_Eng/5-Thambalayaa-1.png" data-un="images/Thumbs_Eng/5-Thambalayaa-2.png"></div>
+                <div class="swiper-slide" data-id="5" style="background-image: url(images/Thumbs_Eng/6-Dumbara-Kara-Andayaa-2.png)" data-sel="images/Thumbs_Eng/6-Dumbara-Kara-Andayaa-1.png" data-un="images/Thumbs_Eng/6-Dumbara-Kara-Andayaa-2.png"></div>
+
+                <div class="swiper-slide" data-id="6" style="background-image: url(images/Thumbs_Eng/7-Waruna-Kara-Andayaa-2.png) " data-sel="images/Thumbs_Eng/7-Waruna-Kara-Andayaa-1.png" data-un="images/Thumbs_Eng/7-Waruna-Kara-Andayaa-2.png"></div>
+                <div class="swiper-slide" data-id="7" style="background-image: url(images/Thumbs_Eng/8-Rakwaana-Dandiyaa-2.png) " data-sel="images/Thumbs_Eng/8-Rakwaana-Dandiyaa-1.png" data-un="images/Thumbs_Eng/8-Rakwaana-Dandiyaa-2.png"></div>
+                <div class="swiper-slide" data-id="8" style="background-image: url(images/Thumbs_Eng/9-Belihuloya-Dandiyaa-2.png) " data-sel="images/Thumbs_Eng/9-Belihuloya-Dandiyaa-1.png" data-un="images/Thumbs_Eng/9-Belihuloya-Dandiyaa-2.png"></div>
+                <div class="swiper-slide" data-id="9" style="background-image: url(images/Thumbs_Eng/10-Kalu-Waral-Hal-Mal-Dandiyaa-2.png) " data-sel="images/Thumbs_Eng/10-Kalu-Waral-Hal-Mal-Dandiyaa-1.png" data-un="images/Thumbs_Eng/10-Kalu-Waral-Hal-Mal-Dandiyaa-2.png"></div>
+                <div class="swiper-slide" data-id="10" style="background-image: url(images/Thumbs_Eng/11-Asoka-Pethyaa-2.png) " data-sel="images/Thumbs_Eng/11-Asoka-Pethyaa-1.png" data-un="images/Thumbs_Eng/11-Asoka-Pethyaa-2.png"></div>
+                <div class="swiper-slide" data-id="11" style="background-image: url(images/Thumbs_Eng/12-Dumbara-Pethiyaa-2.png) " data-sel="images/Thumbs_Eng/12-Dumbara-Pethiyaa-1.png" data-un="images/Thumbs_Eng/12-Dumbara-Pethiyaa-2.png"></div>
+                <div class="swiper-slide" data-id="12" style="background-image: url(images/Thumbs_Eng/13-Gal-Weligowwaa-2.png) " data-sel="images/Thumbs_Eng/13-Gal-Weligowwaa-1.png" data-un="images/Thumbs_Eng/13-Gal-Weligowwaa-2.png"></div>
+                <div class="swiper-slide" data-id="13" style="background-image: url(images/Thumbs_Eng/14-Sri-Lanka-Ankuttaa-2.png) " data-sel="images/Thumbs_Eng/14-Sri-Lanka-Ankuttaa-1.png" data-un="images/Thumbs_Eng/14-Sri-Lanka-Ankuttaa-2.png"></div>
+
+                <div class="swiper-slide" data-id="14" style="background-image: url(images/Thumbs_Eng/15-Aaraa-2.png) " data-sel="images/Thumbs_Eng/15-Aaraa-1.png" data-un="images/Thumbs_Eng/15-Aaraa-2.png"></div>
+                <div class="swiper-slide" data-id="15" style="background-image: url(images/Thumbs_Eng/16-Kaha-Waral-Depulliyaa-2.png) " data-sel="images/Thumbs_Eng/16-Kaha-Waral-Depulliyaa-1.png" data-un="images/Thumbs_Eng/16-Kaha-Waral-Depulliyaa-2.png"></div>
+                <div class="swiper-slide" data-id="16" style="background-image: url(images/Thumbs_Eng/17-Bulath-Hapayaa-2.png) " data-sel="images/Thumbs_Eng/17-Bulath-Hapayaa-1.png" data-un="images/Thumbs_Eng/17-Bulath-Hapayaa-2.png"></div>
+                <div class="swiper-slide" data-id="17" style="background-image: url(images/Thumbs_Eng/18-Rathu-Waral-Depulliyaa-2.png) " data-sel="images/Thumbs_Eng/18-Rathu-Waral-Depulliyaa-1.png" data-un="images/Thumbs_Eng/18-Rathu-Waral-Depulliyaa-2.png"></div>
+
+                <div class="swiper-slide" data-id="18" style="background-image: url(images/Thumbs_Eng/19-Mada-Pethiyaa-2.png) " data-sel="images/Thumbs_Eng/19-Mada-Pethiyaa-1.png" data-un="images/Thumbs_Eng/19-Mada-Pethiyaa-2.png"></div>
+                <div class="swiper-slide" data-id="19" style="background-image: url(images/Thumbs_Eng/20-Rathu-Es-Katu-Pethiyaa-2.png) " data-sel="images/Thumbs_Eng/20-Rathu-Es-Katu-Pethiyaa-1.png" data-un="images/Thumbs_Eng/20-Rathu-Es-Katu-Pethiyaa-2.png"></div>
+                <div class="swiper-slide" data-id="20" style="background-image: url(images/Thumbs_Eng/21-Lee-Thiththayaa-2.png) " data-sel="images/Thumbs_Eng/21-Lee-Thiththayaa-1.png" data-un="images/Thumbs_Eng/21-Lee-Thiththayaa-2.png"></div>
+                <div class="swiper-slide" data-id="21" style="background-image: url(images/Thumbs_Eng/22-Wilpita-Dandiyaa-2.png) " data-sel="images/Thumbs_Eng/22-Wilpita-Dandiyaa-1.png" data-un="images/Thumbs_Eng/22-Wilpita-Dandiyaa-2.png"></div>
+                <div class="swiper-slide" data-id="22" style="background-image: url(images/Thumbs_Eng/23-Halmal-Dandiyaa-2.png) " data-sel="images/Thumbs_Eng/23-Halmal-Dandiyaa-1.png" data-un="images/Thumbs_Eng/23-Halmal-Dandiyaa-2.png"></div>
+                <div class="swiper-slide" data-id="23" style="background-image: url(images/Thumbs_Eng/24-Rathu-Thol-Weligowwaa-2.png) " data-sel="images/Thumbs_Eng/24-Rathu-Thol-Weligowwaa-1.png" data-un="images/Thumbs_Eng/24-Rathu-Thol-Weligowwaa-2.png"></div>
+
+
+            </div>
+            <!--<div class="swiper-pagination"></div>-->
+        </div>
+        <script src="Scripts/swiper-bundle.min.js"></script>
+
+    </div>
+
+</body>
+</html>
